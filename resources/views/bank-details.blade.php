@@ -105,42 +105,46 @@ p {
 
 </head>
 <body>
-<div class="container p-0">
-        <div class="card px-4">
-        <form action="{{ route('bank-details.store') }}" method="POST">
-                @csrf
-                <div class="col-12">
-                    <div class="d-flex flex-column">
-                        <p class="text mb-1">ব্যাংকের নাম</p>
-                        <input class="form-control mb-3" type="text" name="bank_name" required>
-                    </div>
+<div class="container p-0"> 
+    <div class="card px-4">
+        <form action="{{ isset($bankDetail) ? route('bank-details.update', $bankDetail->id) : route('bank-details.store') }}" method="POST">
+            @csrf
+            @if(isset($bankDetail))
+                @method('PUT')
+            @endif
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">ব্যাংকের নাম</p>
+                    <input class="form-control mb-3" type="text" name="bank_name" value="{{ $bankDetail->bank_name ?? '' }}" required>
                 </div>
-                <div class="col-12">
-                    <div class="d-flex flex-column">
-                        <p class="text mb-1">ব্যাংক অ্যাকাউন্ট নম্বর</p>
-                        <input class="form-control mb-3" type="text" name="account_number" required>
-                    </div>
+            </div>
+            <div class="col-12">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">ব্যাংক অ্যাকাউন্ট নম্বর</p>
+                    <input class="form-control mb-3" type="text" name="account_number" value="{{ $bankDetail->account_number ?? '' }}" required>
                 </div>
-                <div class="col-6">
-                    <div class="d-flex flex-column">
-                        <p class="text mb-1">শাখা</p>
-                        <input class="form-control mb-3" type="text">
-                    </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">শাখা</p>
+                    <input class="form-control mb-3" type="text" name="branch" value="{{ $bankDetail->branch ?? '' }}" required>
                 </div>
-                <div class="col-6">
-                    <div class="d-flex flex-column">
-                        <p class="text mb-1">ঠিকানা</p>
-                        <input class="form-control mb-3 pt-2 ">
-                    </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex flex-column">
+                    <p class="text mb-1">ঠিকানা</p>
+                    <input class="form-control mb-3" type="text" name="address" value="{{ $bankDetail->address ?? '' }}" required>
                 </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary mb-3">
-                        <span class="ps-3">পাঠান</span>
-                        <span class="fas fa-arrow-right"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary mb-3">
+                    <span class="ps-3">পাঠান</span>
+                    <span class="fas fa-arrow-right"></span>
+                </button>
+            </div>
+        </form>
     </div>
+</div>
+
 </body>
 </html>
