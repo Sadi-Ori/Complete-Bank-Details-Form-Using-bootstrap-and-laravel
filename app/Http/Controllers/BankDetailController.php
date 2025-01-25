@@ -2,53 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BankDetail;
-use Illuminate\Http\Request;
+   use App\Models\BankDetail;
+   use Illuminate\Http\Request;
 
-class BankDetailController extends Controller
-{
-    // Store bank details
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'bank_name' => 'required|string',
-            'account_number' => 'required|string',
-            'branch' => 'required|string',
-            'address' => 'required|string',
-        ]);
+   class BankDetailController extends Controller
+   {
+       public function index()
+       {
+           $bankDetails = BankDetail::all();
+           return view('bank-details.index', compact('bankDetails'));
+       }
 
-        BankDetail::create($validated);
+       public function create()
+       {
+           return view('bank-details.create');
+       }
 
-        return redirect()->route('bank-details.index');
-    }
+       public function store(Request $request)
+       {
+           $request->validate([
+               'bank_name' => 'required',
+               'account_number' => 'required',
+               'branch' => 'required',
+               'address' => 'required',
+           ]);
 
-    // Edit bank details
-    public function edit($id)
-    {
-        $bankDetail = BankDetail::findOrFail($id);
-        return view('bank-details.edit', compact('bankDetail'));
-    }
+           BankDetail::create($request->all());
 
-    // Update bank details
-    public function update(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'bank_name' => 'required|string',
-            'account_number' => 'required|string',
-            'branch' => 'required|string',
-            'address' => 'required|string',
-        ]);
+           return redirect()->route('bank-details.index')->with('success', 'Bank Detail Created Successfully');
+       }
 
-        $bankDetail = BankDetail::findOrFail($id);
-        $bankDetail->update($validated);
+       public function edit($id)
+       {
+           $bankDetail = BankDetail::findOrFail($id);
+           return view('bank-details.edit', compact('bankDetail'));
+       }
 
-        return redirect()->route('bank-details.index');
-    }
+       public function update(Request $request, $id)
+       {
+           $request->validate([
+               'bank_name' => 'required',
+               'account_number' => 'required',
+               'branch' => 'required',
+               'address' => 'required',
+           ]);
 
-    // Index of Bank Details
-    public function index()
-{
-    $bankDetails = BankDetail::all();
-    return view('bank-details.index', compact('bankDetails'));
-}
-}
+           $bankDetail = BankDetail::findOrFail($id);
+           $bankDetail->update($request->all());
+
+           return redirect()->route('bank-details.index')->with('success', 'Bank Detail Updated Successfully');
+       }
+
+       public function destroy($id)
+       {
+           $bankDetail = BankDetail::findOrFail($id);
+           $bankDetail->delete();
+
+           return redirect()->route('bank-details.index')->with('success', 'Bank Detail Deleted Successfully');
+       }
+   }

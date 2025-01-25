@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('account_number');
             $table->string('branch');
             $table->string('address');
+
             $table->timestamps();
-        });    
+        });
     }
 
     /**
